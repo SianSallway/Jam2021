@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraMovement : MonoBehaviour
 {
     [SerializeField] GameObject target;
-    Vector2 targetPos;
+    public Vector2 targetPos;
     public Vector2 speed;
     public float dampTime;
 
