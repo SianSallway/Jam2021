@@ -7,6 +7,8 @@ public class PlayerController : MonoBehaviour
     [Header ("Player Stats")]
     
     public float speed;
+    public float defaultSpeed;
+    public float acceleratedSpeed;
     public float turnSpeed;
     public float damage;
     public float health;
@@ -29,36 +31,24 @@ public class PlayerController : MonoBehaviour
         horizontalMovement = new Vector3(Input.GetAxis("Horizontal"), 0, 0);
         turnValue = Input.GetAxis("Horizontal");
         verticalMovement = new Vector3( 0, Input.GetAxis("Vertical"), 0);
-        
-        
-        //transform.position += verticalMovement * Time.deltaTime * speed;
-        //transform.position += horizontalMovement * Time.deltaTime * speed;
 
-      
+        //constantly moving at a default speed
+        Vector3 movement = transform.TransformVector(Vector3.up) * Time.deltaTime * speed;
+        transform.position = transform.position + movement;
+
+        //speed increased to an accelerated Speed
         if (verticalMovement.y != 0)
         {
-            //transform.position += verticalMovement * Time.deltaTime * speed;
-            Vector3 movement = transform.TransformVector(Vector3.up) * verticalMovement.y * Time.deltaTime * speed;
-            transform.position = transform.position + movement;
+            speed = acceleratedSpeed;
+        }
+        else
+        {
+            speed = defaultSpeed;
         }
 
-        //down
+        //turning
         if (Input.GetAxis("Horizontal") != 0)
         {
-            //transform.position -= verticalMovement * Time.deltaTime * speed;
-            //gameObject.transform.localRotation = new Vector3();
-
-            //float turn = turnValue * turnSpeed * Time.deltaTime;
-            gameObject.transform.eulerAngles += new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, -turnValue);
-            //Quaternion turnRotation = Quaternion.Euler(0f, turn, 0f);
-            //rigidbody.MoveRotation(rigidbody.rotation * turn);
-
-        }
-
-        //right
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            //transform.position -= horizontalMovement * Time.deltaTime * speed;
             gameObject.transform.eulerAngles += new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, -turnValue);
 
         }

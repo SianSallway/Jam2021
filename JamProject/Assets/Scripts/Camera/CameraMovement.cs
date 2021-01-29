@@ -12,12 +12,23 @@ public class CameraMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        targetPos = target.transform.position;
+        speed = new Vector2(10, 10);
+        Debug.Log("Speed: " + speed);
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        targetPos = GameObject.FindGameObjectWithTag("Player").transform.position;
+
+        Debug.Log("Speed: " + speed);
+
         transform.position = Vector2.SmoothDamp(transform.position, targetPos, ref speed, dampTime);
+    }
+
+    void Move()
+    {
+
     }
 }
