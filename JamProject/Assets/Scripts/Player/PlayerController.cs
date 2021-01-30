@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     public float health;
     public float water;
     public float handling;
+    bool isPressed;
     float turnValue;
     Rigidbody2D rigidbody;
     Vector3 horizontalMovement;
@@ -29,7 +30,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         horizontalMovement = new Vector3(Input.GetAxis("Horizontal"), 0, 0);
-        turnValue = Input.GetAxis("Horizontal");
+        //handling = Input.GetAxis("Horizontal");
         verticalMovement = new Vector3( 0, Input.GetAxis("Vertical"), 0);
 
         //constantly moving at a default speed
@@ -37,8 +38,9 @@ public class PlayerController : MonoBehaviour
         transform.position = transform.position + movement;
 
         //speed increased to an accelerated Speed
-        if (verticalMovement.y != 0)
+        if (verticalMovement.y != 0 && isPressed == false)
         {
+            //Mathf.Lerp(speed, acceleratedSpeed, Time.deltaTime);
             speed = acceleratedSpeed;
         }
         else
@@ -46,16 +48,38 @@ public class PlayerController : MonoBehaviour
             speed = defaultSpeed;
         }
 
+        if (Input.GetKey(KeyCode.S))
+        {
+            isPressed = true;
+        }
+        else
+        {
+            isPressed = false;
+        }
+
         //turning
         if (Input.GetAxis("Horizontal") != 0)
         {
-            gameObject.transform.eulerAngles += new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, -turnValue);
+            if(Input.GetKey(KeyCode.A))
+            {
+                gameObject.transform.eulerAngles += new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, handling);
+            }
+
+            if (Input.GetKey(KeyCode.D))
+            {
+                gameObject.transform.eulerAngles += new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y,-handling);
+            }
 
         }
     }
 
-    public void TakeDamage()
+    public void TakeDamage(float damageTaken)
     {
+        health -= damageTaken;
+    }
 
+    public void nCollisionEnter2D(Collision2D other)
+    {
+        
     }
 }

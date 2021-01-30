@@ -13,7 +13,7 @@ public class CameraMovement : MonoBehaviour
     void Start()
     {
         speed = new Vector2(10, 10);
-        Debug.Log("Speed: " + speed);
+        //Debug.Log("Speed: " + speed);
 
     }
 
@@ -22,7 +22,7 @@ public class CameraMovement : MonoBehaviour
     {
         targetPos = GameObject.FindGameObjectWithTag("Player").transform.position;
 
-        Debug.Log("Speed: " + speed);
+        //Debug.Log("Speed: " + speed);
 
         transform.position = Vector2.SmoothDamp(transform.position, targetPos, ref speed, dampTime);
     }
