@@ -64,7 +64,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Camera\CameraMovement.cs" />
+    <Compile Include="Assets\Scripts\Checkpoints\Checkpoint.cs" />
+    <Compile Include="Assets\Scripts\Checkpoints\CheckpointManager.cs" />
+    <Compile Include="Assets\Scripts\Hazards\HazardProperties.cs" />
+    <Compile Include="Assets\Scripts\Pickups\PickupProperties.cs" />
+    <Compile Include="Assets\Scripts\Player\FrontCollision.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\Raiders\Bullet.cs" />
+    <Compile Include="Assets\Scripts\Raiders\RaiderController.cs" />
+    <Compile Include="Assets\Scripts\Raiders\RaiderShooting.cs" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
