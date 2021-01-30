@@ -1027,7 +1027,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!61 &3021856097695321258
 BoxCollider2D:
@@ -1073,10 +1073,7 @@ MonoBehaviour:
   speed: 0.2
   ramSpeed: 0
   travelSpeed: 0
-  leftOfPlayer: 0
-  rightOfPlayer: 0
-  rightside: 0
-  leftside: 0
+  contactMade: 0
   ramTimer: 0
   dt: 0
   ramDirection: {x: 0, y: 0, z: 0}

@@ -44,7 +44,7 @@ public class RaiderController : MonoBehaviour
         dt += Time.deltaTime;
         Vector3 forwardMovement = transform.TransformVector(Vector3.up) * Time.deltaTime * speed;
         transform.position = transform.position + forwardMovement;
-        speed = travelSpeed;
+        speed = player.speed;
 
         if(dt >= ramTimer)
         {
@@ -74,7 +74,7 @@ public class RaiderController : MonoBehaviour
 
             case State.STATE_TRAVEL:
 
-                speed += travelSpeed;
+                speed = player.speed;
                 transform.eulerAngles = new Vector3(0, 0, 0);
 
                 break;

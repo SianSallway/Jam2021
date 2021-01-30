@@ -161,7 +161,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!114 &8743629582975486797
 MonoBehaviour:
@@ -178,12 +178,12 @@ MonoBehaviour:
   speed: 0.1
   defaultSpeed: 0.1
   acceleratedSpeed: 0.5
-  turnSpeed: 0
   damage: 5
   health: 0
   maxHealth: 0
   water: 0
   handling: 1
+  checkpointManager: {fileID: 0}
   spinOut: 0
 --- !u!61 &8304352756676415222
 BoxCollider2D:

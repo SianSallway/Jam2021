@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class PickupProperties : MonoBehaviour
 {
+    [Header("UI Items")]
+    [SerializeField] GameObject waterScoreTxt;
+    [SerializeField] GameObject nitroScoreTxt;
+    [SerializeField] GameObject healthScoreTxt;
+
     public enum PickupType
     {
         PICKUP_WATER,
@@ -15,7 +20,8 @@ public class PickupProperties : MonoBehaviour
 
     public PickupType pickupType;
     PlayerController player;
-
+    public float handlingScore;
+   
     // Start is called before the first frame update
     void Start()
     {
@@ -35,12 +41,15 @@ public class PickupProperties : MonoBehaviour
             case PickupType.PICKUP_WATER:
 
                 player.water += 1;
+                waterScoreTxt.GetComponent<TMPro.TextMeshProUGUI>().text = ": " + player.water.ToString();
+                Destroy(gameObject);
 
                 break;
 
             case PickupType.PICKUP_TIRES:
 
-                player.handling += 0.1f;
+                //player.handling += 0.1f;
+                handlingScore += 0.1f;
                 player.gameObject.GetComponent<Rigidbody2D>().angularDrag -= 1;
 
                 break;
