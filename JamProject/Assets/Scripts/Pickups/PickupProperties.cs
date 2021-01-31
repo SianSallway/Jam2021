@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class PickupProperties : MonoBehaviour
 {
-    [Header("UI Items")]
-    [SerializeField] GameObject waterScoreTxt;
-    [SerializeField] GameObject nitroScoreTxt;
-    [SerializeField] GameObject healthScoreTxt;
+    //[Header("UI Items")]
+    //[SerializeField] GameObject waterScoreTxt;
+    //[SerializeField] GameObject nitroScoreTxt;
+    //[SerializeField] GameObject healthScoreTxt;
 
     public enum PickupType
     {
         PICKUP_WATER,
-        PICKUP_SPIKES,
         PICKUP_NITRO,
         PICKUP_ARMOUR,
         PICKUP_TIRES
@@ -40,35 +39,32 @@ public class PickupProperties : MonoBehaviour
         {
             case PickupType.PICKUP_WATER:
 
-                player.water += 1;
-                waterScoreTxt.GetComponent<TMPro.TextMeshProUGUI>().text = ": " + player.water.ToString();
+                player.salvage += 1;
+                //waterScoreTxt.GetComponent<TMPro.TextMeshProUGUI>().text = ": " + player.water.ToString();
                 Destroy(gameObject);
 
                 break;
 
             case PickupType.PICKUP_TIRES:
 
-                //player.handling += 0.1f;
-                handlingScore += 0.1f;
-                player.gameObject.GetComponent<Rigidbody2D>().angularDrag -= 1;
-
-                break;
-
-            case PickupType.PICKUP_SPIKES:
-
-                player.damage += 1;
+                player.salvage += 0.055f;
+                Destroy(gameObject);
 
                 break;
 
             case PickupType.PICKUP_NITRO:
 
                 player.acceleratedSpeed += 0.1f;
+                player.salvage += 0.06f;
+
+                Destroy(gameObject);
 
                 break;
 
             case PickupType.PICKUP_ARMOUR:
 
-                player.RestoreHealth();
+                player.salvage += 1.75f;
+                Destroy(gameObject);
 
                 break;
         }

@@ -7,94 +7,119 @@ public class PlayerController : MonoBehaviour
     [Header ("Player Stats")]
     
     public float speed;
+    public float reverseSpeed;
     public float defaultSpeed;
     public float acceleratedSpeed;
     public float damage;
     public float health;
     public float maxHealth;
+    public float maxWater;
     public float water;
     public float handling;
+    public float salvage;
     public CheckpointManager checkpointManager;
     bool isPressed;
-    bool isSlowed;
+    public bool isSlowed;
+    public bool isBlocked;
     public bool spinOut;
     float turnValue;
-    Rigidbody2D rigidbody;
+    public Rigidbody2D rigidbody;
     Vector3 horizontalMovement;
     Vector3 verticalMovement;
 
+    [SerializeField] DilemmaManager dilemmaManager;
+
+    
     // Start is called before the first frame update
     void Start()
     {
         rigidbody = gameObject.GetComponent<Rigidbody2D>();
         checkpointManager = GameObject.Find("CheckpointManager").GetComponent<CheckpointManager>();
+        dilemmaManager = GameObject.Find("DilemmaTrigger").GetComponent<DilemmaManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        horizontalMovement = new Vector3(Input.GetAxis("Horizontal"), 0, 0);
-        //handling = Input.GetAxis("Horizontal");
-        verticalMovement = new Vector3( 0, Input.GetAxis("Vertical"), 0);
-
-        //constantly moving at a default speed
-        if (!isSlowed)
+        if(!dilemmaManager.finalReached)
         {
-            Vector3 movement = transform.TransformVector(Vector3.up) * Time.deltaTime * speed;
-            transform.position = transform.position + movement;
+            water -= 1;
 
-
-            //speed increased to an accelerated Speed
-            if (verticalMovement.y != 0 && isPressed == false)
+            if (water <= 0)
             {
-                //Mathf.Lerp(speed, acceleratedSpeed, Time.deltaTime);
-                speed = acceleratedSpeed;
-            }
-            else
-            {
-                speed = defaultSpeed;
+                dilemmaManager.DeathDilemma();
             }
 
-            if (Input.GetKey(KeyCode.S))
-            {
-                isPressed = true;
-            }
-            else
-            {
-                isPressed = false;
-            }
-        }
+            horizontalMovement = new Vector3(Input.GetAxis("Horizontal"), 0, 0);
+            //handling = Input.GetAxis("Horizontal");
+            verticalMovement = new Vector3(0, Input.GetAxis("Vertical"), 0);
 
-        //turning
-        if(!spinOut)
-        {
-            if (Input.GetAxis("Horizontal") != 0)
+            //constantly moving at a default speed
+            if (!isSlowed)
             {
-                if (Input.GetKey(KeyCode.A))
+                if (isBlocked)
                 {
-                    gameObject.transform.eulerAngles += new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, handling);
+                    speed = 0f;
                 }
 
-                if (Input.GetKey(KeyCode.D))
+
+                if (!isPressed)
                 {
-                    gameObject.transform.eulerAngles += new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, -handling);
+                    Vector3 movement = transform.TransformVector(Vector3.up) * Time.deltaTime * speed;
+                    transform.position = transform.position + movement;
+                }
+                else
+                {
+                    Vector3 movement = transform.TransformVector(Vector3.down) * Time.deltaTime * reverseSpeed;
+                    transform.position = transform.position + movement;
                 }
 
+                //speed increased to an accelerated Speed
+                if (verticalMovement.y != 0 && Input.GetKey(KeyCode.W))
+                {
+                    //Mathf.Lerp(speed, acceleratedSpeed, Time.deltaTime);
+                    speed = acceleratedSpeed;
+                }
+                else
+                {
+                    speed = defaultSpeed;
+                }
+
+                if (Input.GetKey(KeyCode.S))
+                {
+                    isPressed = true;
+                }
+                else
+                {
+                    isPressed = false;
+                }
+            }
+
+            //turning
+            if (!spinOut)
+            {
+                if (Input.GetAxis("Horizontal") != 0)
+                {
+                    if (Input.GetKey(KeyCode.A))
+                    {
+                        gameObject.transform.eulerAngles += new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, handling);
+                    }
+
+                    if (Input.GetKey(KeyCode.D))
+                    {
+                        gameObject.transform.eulerAngles += new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, -handling);
+                    }
+
+                }
             }
         }
-
-        //if(handling)
-        //{
-        //
-        //}
     }
 
     public void TakeDamage(float damageTaken)
     {
         if(health <= 0)
         {
-            checkpointManager.ActivateCheckpoint();
-            Destroy(gameObject);
+            dilemmaManager.DeathDilemma();
         }
         else
         {
@@ -110,16 +135,16 @@ public class PlayerController : MonoBehaviour
     {
         health = maxHealth;
     }
-
+      
     public void SetSpeed(float newSpeed)
     {
         speed = newSpeed;
     }
 
-    public void RestoreSpeed()
+    public void RestoreSpeed(bool b)
     {
         speed = defaultSpeed;
-        isSlowed = false;
+        b = false;
         Debug.Log("New Speed: " + speed);
     }
 
@@ -129,5 +154,11 @@ public class PlayerController : MonoBehaviour
         isSlowed = true;
         Debug.Log("New Speed: " + speed);
     }
+
+    void ActivateDeathDilemma()
+    {
+        
+    }
+
 
 }

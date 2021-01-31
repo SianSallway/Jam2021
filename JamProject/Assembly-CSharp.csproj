@@ -66,6 +66,7 @@
     <Compile Include="Assets\Scripts\Camera\CameraMovement.cs" />
     <Compile Include="Assets\Scripts\Checkpoints\Checkpoint.cs" />
     <Compile Include="Assets\Scripts\Checkpoints\CheckpointManager.cs" />
+    <Compile Include="Assets\Scripts\Checkpoints\DilemmaManager.cs" />
     <Compile Include="Assets\Scripts\Hazards\HazardProperties.cs" />
     <Compile Include="Assets\Scripts\Pickups\PickupProperties.cs" />
     <Compile Include="Assets\Scripts\Player\FrontCollision.cs" />

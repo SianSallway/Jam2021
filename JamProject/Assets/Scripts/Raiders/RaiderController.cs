@@ -26,14 +26,16 @@ public class RaiderController : MonoBehaviour
     public Vector3 ramDirection;
     float rotationAngle;
 
+    [SerializeField] DilemmaManager dilemmaManager;
 
     // Start is called before the first frame update
     void Start()
     {
         //line = gameObject.GetComponent<LineRenderer>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        dilemmaManager = GameObject.Find("DilemmaTrigger").GetComponent<DilemmaManager>();
 
-        travelSpeed = Random.Range(0.1f, 0.2f);
+        //travelSpeed = Random.Range(0.1f, 0.2f);
         ramSpeed = Random.Range(0.3f, 0.6f);
         ramTimer = Random.Range(6, 15);
     }
@@ -41,44 +43,48 @@ public class RaiderController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        dt += Time.deltaTime;
-        Vector3 forwardMovement = transform.TransformVector(Vector3.up) * Time.deltaTime * speed;
-        transform.position = transform.position + forwardMovement;
-        speed = player.speed;
-
-        if(dt >= ramTimer)
+        if(!dilemmaManager.finalReached)
         {
-            raiderState = State.STATE_RAM;
+            dt += Time.deltaTime;
+            Vector3 forwardMovement = transform.TransformVector(Vector3.up) * Time.deltaTime * speed;
+            transform.position = transform.position + forwardMovement;
+            speed = player.speed;
+
+            if (dt >= ramTimer)
+            {
+                raiderState = State.STATE_RAM;
+            }
+
+            switch (raiderState)
+            {
+                case State.STATE_RAM:
+
+                    player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+
+                    ramDirection = (player.transform.position - transform.position).normalized;
+                    rotationAngle = Mathf.Atan2(ramDirection.x, ramDirection.y) * Mathf.Rad2Deg;
+                    transform.eulerAngles = new Vector3(0, 0, -rotationAngle);
+
+                    speed += ramSpeed;
+
+                    if (Vector3.Distance(transform.position, player.transform.position) == 3 || contactMade)
+                    {
+                        raiderState = State.STATE_TRAVEL;
+                        contactMade = false;
+                        dt = 0;
+                    }
+
+                    break;
+
+                case State.STATE_TRAVEL:
+
+                    speed = player.speed;
+                    transform.eulerAngles = new Vector3(0, 0, 0);
+
+                    break;
+            }
         }
-
-        switch (raiderState)
-        {
-            case State.STATE_RAM:
-
-                player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-
-                ramDirection = (player.transform.position - transform.position).normalized;
-                rotationAngle = Mathf.Atan2(ramDirection.x, ramDirection.y) * Mathf.Rad2Deg;
-                transform.eulerAngles = new Vector3(0, 0, -rotationAngle);
-
-                speed += ramSpeed;
-
-                if (Vector3.Distance(transform.position, player.transform.position) == 3 || contactMade)
-                {
-                    raiderState = State.STATE_TRAVEL;
-                    contactMade = false;
-                    dt = 0;
-                }
-
-                break;
-
-            case State.STATE_TRAVEL:
-
-                speed = player.speed;
-                transform.eulerAngles = new Vector3(0, 0, 0);
-
-                break;
-        }       
+        
 
     }
 

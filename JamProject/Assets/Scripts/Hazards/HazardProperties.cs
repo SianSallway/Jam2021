@@ -32,22 +32,34 @@ public class HazardProperties : MonoBehaviour
     {
         switch (hazardType)
         {
-
-
-               
-
             case HazardType.HAZARD_BOLDER:
 
                 if (other.gameObject.tag == "Player")
                 {
                     DealDamage(other.gameObject, bolderDamage);
-                    //gameObject.SetActive(false);
+                    other.gameObject.GetComponent<PlayerController>().isBlocked = true;
+
+
                 }
 
                 break;
-
         }
+    }
 
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        switch (hazardType)
+        {
+            case HazardType.HAZARD_BOLDER:
+
+                if (other.gameObject.tag == "Player")
+                {
+                    Unblock();
+
+                }
+
+                break;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -56,29 +68,29 @@ public class HazardProperties : MonoBehaviour
         {
             case HazardType.HAZARD_OIL:
 
-            if (other.gameObject.tag == "Player")
-            {
-                // other.gameObject.GetComponent<PlayerController>().spinOut = true;
-                //other.gameObject.transform.eulerAngles += new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 100f);
+                if (other.gameObject.tag == "Player")
+                {
+                    // other.gameObject.GetComponent<PlayerController>().spinOut = true;
+                    //other.gameObject.transform.eulerAngles += new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 100f);
                     
-            }
-                break;
-
+                }
+                break;                           
+                               
             case HazardType.HAZARD_CACTUS:
 
-            if (other.gameObject.tag == "Player")
-            {
-                animator.SetTrigger("Explode");
-                //Animation anim = an.GetComponent<Animation>();
+                if (other.gameObject.tag == "Player")
+                {
+                    animator.SetTrigger("Explode");
+                    //Animation anim = an.GetComponent<Animation>();
 
-                Debug.Log("Collided w/ player");
-                other.gameObject.GetComponent<PlayerController>().SlowSpeed();
-                DealDamage(other.gameObject, cactusDamage);
+                    Debug.Log("Collided w/ player");
+                    other.gameObject.GetComponent<PlayerController>().SlowSpeed();
+                    DealDamage(other.gameObject, cactusDamage);
 
-                Invoke("AlterPlayerSpeed", 0.2f);
-            }
+                    Invoke("RemoveSlowness", 0.2f);
+                }
 
-            break;
+                break;
         }
     }
 
@@ -87,9 +99,17 @@ public class HazardProperties : MonoBehaviour
         obj.GetComponent<PlayerController>().TakeDamage(damage);
     }
 
-    void AlterPlayerSpeed()
+    void RemoveSlowness()
     {
+        PlayerController player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        player.RestoreSpeed(player.isSlowed); 
+        
+    }
+    void Unblock()
+    {
+        PlayerController player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        player.isBlocked = false;
+        player.speed = player.defaultSpeed;
 
-        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().RestoreSpeed();
     }
 }
