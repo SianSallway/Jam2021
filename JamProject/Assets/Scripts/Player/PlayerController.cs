@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
     {
         if(!dilemmaManager.finalReached)
         {
-            water -= 1;
+            water -= 0.01f;
 
             if (water <= 0)
             {

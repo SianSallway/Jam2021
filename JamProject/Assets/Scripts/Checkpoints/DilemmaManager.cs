@@ -33,6 +33,7 @@ public class DilemmaManager : MonoBehaviour
     [SerializeField] GameObject armourBtn;
     [SerializeField] GameObject waterBtn;
     [SerializeField] GameObject continueBtn;
+    [SerializeField] GameObject backgroundImg;
 
     [Header("Player Death UI")]
 
@@ -67,6 +68,7 @@ public class DilemmaManager : MonoBehaviour
                     d4Text.SetActive(false);
                     d5Text.SetActive(false);
                     dFinalText.SetActive(false);
+                    backgroundImg.SetActive(true);
 
                     handlingBtn.SetActive(true);
                     speedBtn.SetActive(true);
@@ -83,6 +85,7 @@ public class DilemmaManager : MonoBehaviour
                     d4Text.SetActive(false);
                     d5Text.SetActive(false);
                     dFinalText.SetActive(false);
+                    backgroundImg.SetActive(true);
 
                     handlingBtn.SetActive(false);
                     speedBtn.SetActive(false);
@@ -99,6 +102,8 @@ public class DilemmaManager : MonoBehaviour
                     d4Text.SetActive(false);
                     d5Text.SetActive(false);
                     dFinalText.SetActive(false);
+                    backgroundImg.SetActive(true);
+
 
                     handlingBtn.SetActive(false);
                     speedBtn.SetActive(true);
@@ -115,6 +120,7 @@ public class DilemmaManager : MonoBehaviour
                     d4Text.SetActive(true);
                     d5Text.SetActive(false);
                     dFinalText.SetActive(false);
+                    backgroundImg.SetActive(true);
 
                     handlingBtn.SetActive(false);
                     speedBtn.SetActive(false);
@@ -131,6 +137,7 @@ public class DilemmaManager : MonoBehaviour
                     d4Text.SetActive(false);
                     d5Text.SetActive(true);
                     dFinalText.SetActive(false);
+                    backgroundImg.SetActive(true);
 
                     handlingBtn.SetActive(true);
                     speedBtn.SetActive(true);
@@ -147,6 +154,7 @@ public class DilemmaManager : MonoBehaviour
                     d4Text.SetActive(false);
                     d5Text.SetActive(false);
                     dFinalText.SetActive(true);
+                    backgroundImg.SetActive(true);
 
                     handlingBtn.SetActive(true);
                     speedBtn.SetActive(true);
@@ -256,6 +264,7 @@ public class DilemmaManager : MonoBehaviour
         d4Text.SetActive(false);
         d5Text.SetActive(false);
         dFinalText.SetActive(false);
+        backgroundImg.SetActive(false);
 
         handlingBtn.SetActive(false);
         speedBtn.SetActive(false);
