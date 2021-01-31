@@ -253,7 +253,11 @@ public class DilemmaManager : MonoBehaviour
         player.health = player.maxHealth;
         player.water = player.maxWater;
 
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name + 1);
+        if(SceneManager.GetActiveScene().name != "Level7")
+        {
+            //SceneManager.LoadScene(SceneManager.GetActiveScene().name + 1);
+        }
+
     }
 
     void DisableUI()
