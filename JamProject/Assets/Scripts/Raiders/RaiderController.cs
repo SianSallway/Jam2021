@@ -25,6 +25,8 @@ public class RaiderController : MonoBehaviour
     public float dt;
     public Vector3 ramDirection;
     float rotationAngle;
+    AudioSource audioSource;
+    //[SerializeField]List<AudioClip> clips;
 
     [SerializeField] DilemmaManager dilemmaManager;
 
@@ -34,6 +36,7 @@ public class RaiderController : MonoBehaviour
         //line = gameObject.GetComponent<LineRenderer>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         dilemmaManager = GameObject.Find("DilemmaTrigger").GetComponent<DilemmaManager>();
+        audioSource = gameObject.GetComponent<AudioSource>();
 
         //travelSpeed = Random.Range(0.1f, 0.2f);
         ramSpeed = Random.Range(0.3f, 0.6f);
@@ -43,7 +46,7 @@ public class RaiderController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!dilemmaManager.finalReached)
+        if(!dilemmaManager.dilemmaReached)
         {
             dt += Time.deltaTime;
             Vector3 forwardMovement = transform.TransformVector(Vector3.up) * Time.deltaTime * speed;
@@ -83,8 +86,7 @@ public class RaiderController : MonoBehaviour
 
                     break;
             }
-        }
-        
+        }       
 
     }
 
@@ -92,6 +94,7 @@ public class RaiderController : MonoBehaviour
     {
         if (health <= 0)
         {
+            audioSource.Play();
             Destroy(gameObject);
         }
         else

@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!dilemmaManager.finalReached)
+        if(!dilemmaManager.dilemmaReached)
         {
             water -= 0.01f;
 

@@ -15,11 +15,17 @@ public class HazardProperties : MonoBehaviour
     public float cactusDamage;
     public float bolderDamage;
     [SerializeField] Animator animator;
+    AudioSource audioSource;
 
     // Start is called before the first frame update
     void Start()
     {
         animator = gameObject.GetComponent<Animator>();
+        
+        if(hazardType != HazardType.HAZARD_OIL)
+        {
+            audioSource = gameObject.GetComponent<AudioSource>();
+        }
     }
 
     // Update is called once per frame
@@ -36,6 +42,8 @@ public class HazardProperties : MonoBehaviour
 
                 if (other.gameObject.tag == "Player")
                 {
+                    audioSource.Play();
+
                     DealDamage(other.gameObject, bolderDamage);
                     other.gameObject.GetComponent<PlayerController>().isBlocked = true;
 
@@ -81,6 +89,7 @@ public class HazardProperties : MonoBehaviour
 
                 if (other.gameObject.tag == "Player")
                 {
+                    audioSource.Play();
                     animator.SetTrigger("Explode");
                     //Animation anim = an.GetComponent<Animation>();
 

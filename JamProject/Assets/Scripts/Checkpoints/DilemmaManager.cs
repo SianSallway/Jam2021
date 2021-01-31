@@ -11,14 +11,16 @@ public class DilemmaManager : MonoBehaviour
         DILEMMA_TWO,
         DILEMMA_THREE,
         DILEMMA_FOUR,
-        DILEMMA_FIFTH,
+        DILEMMA_FIVE,
+        DILEMMA_SIX,
         DILEMMA_FINAL
     };
 
     public DilemmaType dilemmaType;
+    [SerializeField] GameObject cameraRig;
     [SerializeField] PlayerController player;
     public CheckpointManager checkpointManager;
-    public bool finalReached;
+    public bool dilemmaReached;
 
     [Header("UI Items")]
 
@@ -27,25 +29,24 @@ public class DilemmaManager : MonoBehaviour
     [SerializeField] GameObject d3Text;
     [SerializeField] GameObject d4Text;
     [SerializeField] GameObject d5Text;
+    [SerializeField] GameObject d6Text;
     [SerializeField] GameObject dFinalText;
-    [SerializeField] GameObject handlingBtn;
-    [SerializeField] GameObject speedBtn;
-    [SerializeField] GameObject armourBtn;
-    [SerializeField] GameObject waterBtn;
-    [SerializeField] GameObject continueBtn;
-    [SerializeField] GameObject backgroundImg;
+    [SerializeField] GameObject pauseUI;
+
+    [SerializeField] GameObject opening;
 
     [Header("Player Death UI")]
 
-    [SerializeField] GameObject deathText;
-    [SerializeField] GameObject deathBtn;
+    [SerializeField] GameObject deathUI;
     // Start is called before the first frame update
     void Start()
     {
         DisableUI();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         checkpointManager = GameObject.Find("CheckpointManager").GetComponent<CheckpointManager>();
-        finalReached = false;
+        dilemmaReached = true;
+        cameraRig = GameObject.Find("CameraRig");
+        opening.SetActive(true);
     }
 
     // Update is called once per frame
@@ -68,12 +69,8 @@ public class DilemmaManager : MonoBehaviour
                     d4Text.SetActive(false);
                     d5Text.SetActive(false);
                     dFinalText.SetActive(false);
-                    backgroundImg.SetActive(true);
-
-                    handlingBtn.SetActive(true);
-                    speedBtn.SetActive(true);
-                    armourBtn.SetActive(false);
-                    waterBtn.SetActive(false);
+           
+                    dilemmaReached = true;
 
                     break;
 
@@ -85,12 +82,8 @@ public class DilemmaManager : MonoBehaviour
                     d4Text.SetActive(false);
                     d5Text.SetActive(false);
                     dFinalText.SetActive(false);
-                    backgroundImg.SetActive(true);
-
-                    handlingBtn.SetActive(false);
-                    speedBtn.SetActive(false);
-                    armourBtn.SetActive(true);
-                    waterBtn.SetActive(true);
+  ;
+                    dilemmaReached = true;
 
                     break;
 
@@ -102,13 +95,8 @@ public class DilemmaManager : MonoBehaviour
                     d4Text.SetActive(false);
                     d5Text.SetActive(false);
                     dFinalText.SetActive(false);
-                    backgroundImg.SetActive(true);
 
-
-                    handlingBtn.SetActive(false);
-                    speedBtn.SetActive(true);
-                    armourBtn.SetActive(true);
-                    waterBtn.SetActive(false);
+                    dilemmaReached = true;
 
                     break;
 
@@ -120,16 +108,12 @@ public class DilemmaManager : MonoBehaviour
                     d4Text.SetActive(true);
                     d5Text.SetActive(false);
                     dFinalText.SetActive(false);
-                    backgroundImg.SetActive(true);
-
-                    handlingBtn.SetActive(false);
-                    speedBtn.SetActive(false);
-                    armourBtn.SetActive(true);
-                    waterBtn.SetActive(true);
+             
+                    dilemmaReached = true;
 
                     break;
 
-                case DilemmaType.DILEMMA_FIFTH:
+                case DilemmaType.DILEMMA_FIVE:
 
                     d1Text.SetActive(false);
                     d2Text.SetActive(false);
@@ -137,12 +121,24 @@ public class DilemmaManager : MonoBehaviour
                     d4Text.SetActive(false);
                     d5Text.SetActive(true);
                     dFinalText.SetActive(false);
-                    backgroundImg.SetActive(true);
+         
+                    dilemmaReached = true;
 
-                    handlingBtn.SetActive(true);
-                    speedBtn.SetActive(true);
-                    armourBtn.SetActive(false);
-                    waterBtn.SetActive(false);
+                    break;
+
+                case DilemmaType.DILEMMA_SIX:
+
+                    d1Text.SetActive(false);
+                    d2Text.SetActive(false);
+                    d3Text.SetActive(false);
+                    d4Text.SetActive(false);
+                    d5Text.SetActive(false);
+                    d6Text.SetActive(true);
+                    dFinalText.SetActive(false);
+          
+
+                    dilemmaReached = true;
+
 
                     break;
 
@@ -154,13 +150,7 @@ public class DilemmaManager : MonoBehaviour
                     d4Text.SetActive(false);
                     d5Text.SetActive(false);
                     dFinalText.SetActive(true);
-                    backgroundImg.SetActive(true);
 
-                    handlingBtn.SetActive(true);
-                    speedBtn.SetActive(true);
-                    armourBtn.SetActive(false);
-                    waterBtn.SetActive(false);
-                    continueBtn.SetActive(true);
 
                     FinalDilemma();
 
@@ -202,7 +192,12 @@ public class DilemmaManager : MonoBehaviour
     public void UpgradeSpeed()
     {
         player.acceleratedSpeed += 0.2f;
-        //player.defaultSpeed += 1.0f;
+        //cameraRig.GetComponent<Camera>().orthographicSize += 0.4f;
+        //
+        //if (cameraRig.GetComponent<Camera>().orthographicSize >= 12f)
+        //{
+        //    cameraRig.GetComponent<Camera>().orthographicSize = 12;
+        //}
 
         if (player.acceleratedSpeed >= 2.5f)
         {
@@ -226,7 +221,9 @@ public class DilemmaManager : MonoBehaviour
 
     public void DeathDilemma()
     {
-        DisableUI();
+        //DisableUI();
+
+        dilemmaReached = true;
 
         GameObject[] raidersInScene = GameObject.FindGameObjectsWithTag("Raider");
 
@@ -235,28 +232,45 @@ public class DilemmaManager : MonoBehaviour
             Destroy(raider);
         }
 
-        deathBtn.SetActive(true);
-        deathText.SetActive(true);
+        deathUI.SetActive(true);
     }
 
     public void Continue()
     {
-        deathBtn.SetActive(false);
-        deathText.SetActive(false);
+        DisableUI();
+
         checkpointManager.ActivateCheckpoint();
         Destroy(player.gameObject);
     }
 
+    public void Resume()
+    {
+        DisableUI();
+
+    }
+
+    public void Go()
+    {
+        DisableUI();
+
+    }
+
+    public void PauseGame()
+    {
+        pauseUI.SetActive(true);
+        dilemmaReached = true;
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
     void FinalDilemma()
     {
-        finalReached = true;
+        dilemmaReached = true;
         player.health = player.maxHealth;
         player.water = player.maxWater;
-
-        if(SceneManager.GetActiveScene().name != "Level7")
-        {
-            //SceneManager.LoadScene(SceneManager.GetActiveScene().name + 1);
-        }
 
     }
 
@@ -267,13 +281,13 @@ public class DilemmaManager : MonoBehaviour
         d3Text.SetActive(false);
         d4Text.SetActive(false);
         d5Text.SetActive(false);
+        d6Text.SetActive(false);
         dFinalText.SetActive(false);
-        backgroundImg.SetActive(false);
+        deathUI.SetActive(false);
+        pauseUI.SetActive(false);
 
-        handlingBtn.SetActive(false);
-        speedBtn.SetActive(false);
-        armourBtn.SetActive(false);
-        waterBtn.SetActive(false);
-        continueBtn.SetActive(false); 
+        opening.SetActive(false);
+        dilemmaReached = false;
+
     }
 }
