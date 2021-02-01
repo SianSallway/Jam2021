@@ -54,7 +54,7 @@ public class PickupProperties : MonoBehaviour
 
             case PickupType.PICKUP_TIRES:
 
-                player.salvage += 0.055f;
+                player.salvage += 1;
                 salvageTxt.GetComponent<Text>().text = player.salvage.ToString() + "/80";
 
                 Destroy(gameObject);
@@ -63,7 +63,7 @@ public class PickupProperties : MonoBehaviour
 
             case PickupType.PICKUP_NITRO:
 
-                player.acceleratedSpeed += 0.1f;
+                player.acceleratedSpeed += 1;
                 salvageTxt.GetComponent<Text>().text = player.salvage.ToString() + "/80";
                 Destroy(gameObject);
 
@@ -71,7 +71,7 @@ public class PickupProperties : MonoBehaviour
 
             case PickupType.PICKUP_ARMOUR:
 
-                player.salvage += 1.75f;
+                player.salvage += 1;
                 salvageTxt.GetComponent<Text>().text = player.salvage.ToString() + "/80";
                 Destroy(gameObject);
 

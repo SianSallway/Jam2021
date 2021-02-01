@@ -18,12 +18,17 @@ public class RaiderController : MonoBehaviour
     public float travelSpeed;
 
     public bool contactMade;
+    public bool returned;
+    public bool blocked;
+    public bool turned;
 
-    LineRenderer line;
+
+     LineRenderer line;
     PlayerController player;
     public float ramTimer;
     public float dt;
     public Vector3 ramDirection;
+    public Vector3 returnDirection;
     float rotationAngle;
     AudioSource audioSource;
     //[SerializeField]List<AudioClip> clips;
@@ -53,6 +58,7 @@ public class RaiderController : MonoBehaviour
             transform.position = transform.position + forwardMovement;
             speed = player.speed;
 
+
             if (dt >= ramTimer)
             {
                 raiderState = State.STATE_RAM;
@@ -61,6 +67,8 @@ public class RaiderController : MonoBehaviour
             switch (raiderState)
             {
                 case State.STATE_RAM:
+
+                    returned = false;
 
                     player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
 
@@ -82,7 +90,29 @@ public class RaiderController : MonoBehaviour
                 case State.STATE_TRAVEL:
 
                     speed = player.speed;
-                    transform.eulerAngles = new Vector3(0, 0, 0);
+
+                    /*if(!returned && !blocked)
+                    {
+                        transform.eulerAngles = new Vector3(0, 0, Random.Range(-50, 50));
+
+                        if (Vector3.Distance(transform.position, player.transform.position) >= 10)
+                        {
+                            returned = true;
+                        }
+                    }
+                    else if(returned && !blocked )
+                    {
+                        transform.eulerAngles = new Vector3(0, 0, player.transform.eulerAngles.z);
+
+                    }*/
+
+                    if(!blocked)
+                    {
+                        transform.eulerAngles = new Vector3(0, 0, player.transform.eulerAngles.z);
+
+                    }
+
+
 
                     break;
             }
@@ -110,6 +140,47 @@ public class RaiderController : MonoBehaviour
             contactMade = true;
             DealDamage(other.gameObject, damage);
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.gameObject.GetComponent<HazardProperties>() != null)
+        {
+            blocked = true;
+            Turn();
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.GetComponent<HazardProperties>() != null)
+        {
+            blocked = false;
+            turned = false;
+        }
+    }
+
+    IEnumerator TurnRaider()
+    {
+        yield return new WaitForSeconds(5);
+
+        float rotation = Random.Range(-50, 50);
+        transform.eulerAngles = new Vector3(0, 0, rotation);
+
+        yield break;
+    }
+
+    void Turn()
+    {
+        if(!turned)
+        {
+            float rotation = Random.Range(-50, 50);
+            float turnValue = transform.eulerAngles.z + 70;
+            transform.eulerAngles = new Vector3(0, 0, turnValue);
+            turned = true;
+        }
+
+
     }
 
     public void DealDamage(GameObject obj, float damageValue)

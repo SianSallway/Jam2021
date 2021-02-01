@@ -78,7 +78,7 @@ public class HazardProperties : MonoBehaviour
 
                 if (other.gameObject.tag == "Player")
                 {
-                    float rotation = Random.Range(50f, 100f);
+                    float rotation = Random.Range(-50, 50);
                     other.gameObject.GetComponent<PlayerController>().spinOut = true;
                     other.gameObject.transform.eulerAngles = new Vector3(0, 0, rotation);
                     other.gameObject.GetComponent<PlayerController>().spinOut = false;
